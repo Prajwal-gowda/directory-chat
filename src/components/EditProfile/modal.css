@@ -1,0 +1,104 @@
+.input-fields {
+  width: 100%;
+  padding: 5px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  border-bottom: 2px solid #a9a9a9;
+}
+.input-fields::placeholder {
+  font-size: 18px;
+  opacity: 0.7;
+}
+.edit-profile-user-details {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.edit-profile-email-phone {
+  margin-top: 50px;
+}
+.edit-profile-id-dob-dept {
+  margin: 40px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contact-info {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.47;
+  color: #a9a9a9;
+  margin: 20px 0 10px 0;
+}
+.profile-email,
+.profile-phone {
+  display: flex;
+}
+.profile-email i {
+  color: #1600d5;
+  border-radius: 50%;
+  text-align: center;
+  padding: 4px 2px 0 2px;
+  background-color: #a39be5;
+  height: 22px;
+  width: 22px;
+}
+.profile-phone i {
+  margin-top: 8px;
+  color: #1600d5;
+  border-radius: 50%;
+  text-align: center;
+  padding: 4px 2px 0 2px;
+  background-color: #a39be5;
+  height: 22px;
+  width: 22px;
+}
+.edit-profile-name {
+  margin-bottom: 8px;
+  font-size: 33px;
+  color: #3e3f42;
+}
+.phone-number-input {
+  padding-top: 8px;
+  margin-left: 20px;
+}
+.user-email {
+  padding-top: 5px;
+  margin-left: 20px;
+  font-size: 15px;
+  color: #3e3f42;
+}
+.profile-label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.83;
+  color: #a9a9a9;
+}
+.skills-header {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.47;
+  color: #a9a9a9;
+}
+.error-msg {
+  color: red;
+  font-size: 12px;
+}
+.add-skills-container {
+  margin: 17px 0;
+}
+.custom-select {
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #a9a9a9;
+  padding: 5px 0;
+}
+.profile-user-employeeid {
+  margin-top: 5px;
+  color: #3e3f42;
+}

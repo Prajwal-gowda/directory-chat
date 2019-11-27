@@ -1,0 +1,68 @@
+.sidebar {
+  position: fixed;
+  width: 15%;
+  height: calc(100vh - 110px);
+  box-shadow: 8px 8px 15px 0 rgba(22, 0, 213, 0.06);
+  background-color: #d9d9d9;
+  box-sizing: border-box;
+}
+
+.dashboard-icon {
+  font-size: 40px;
+  display: block;
+  text-align: center;
+  margin: 25px auto;
+  cursor: pointer;
+  outline: none;
+}
+
+.user-list {
+  padding: 1px;
+}
+
+.name-list {
+  display: block;
+  text-decoration: none;
+  list-style-type: none;
+  line-height: 27px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  margin: 5px auto;
+}
+
+.link-elem {
+  text-transform: capitalize;
+  text-decoration: none;
+  display: block;
+  list-style-type: none;
+  line-height: 27px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: transparent;
+  color: black;
+  margin: 5px auto;
+  text-align: center;
+}
+
+.link-elem:hover {
+  background-color: #595959;
+  color: white;
+}
+
+.active-link {
+  text-decoration: none;
+  display: block;
+  color: black;
+  background-color: white;
+}
+
+.user-icon{
+    padding-right: 5px;
+}

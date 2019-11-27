@@ -1,0 +1,8 @@
+.reciever-name {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 5px;
+  text-transform: capitalize;
+  /* background-color: #595959; */
+}

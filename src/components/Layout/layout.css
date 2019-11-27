@@ -1,0 +1,11 @@
+.chat-application-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 30px;
+  font-size: 40px;
+  cursor: pointer;
+  outline: none;
+}
+
+.chat-application-btn:hover {
+}

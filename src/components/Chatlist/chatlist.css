@@ -1,0 +1,18 @@
+.chat-item {
+  text-align: left;
+  margin-left: 20px;
+  height: calc(100vh - 165px);
+  overflow-y: scroll;
+}
+
+strong {
+  color: #000000;
+}
+
+.message-data {
+  text-transform: capitalize;
+  font-size: 20px;
+  color: #595959;
+  display: block;
+  padding: 10px;
+}

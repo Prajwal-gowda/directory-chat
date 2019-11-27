@@ -1,0 +1,52 @@
+.user-initial-display-container {
+  height: 60px;
+  width: 60px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 30px;
+}
+.profile-user-image {
+  height: 150px;
+  width: 150px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 100px;
+}
+.header-profile-user-image {
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 30px;
+}
+.profile-image {
+  height: 50px;
+  width: 50px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 30px;
+}

@@ -1,0 +1,73 @@
+.profile-photo {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+}
+.profile-container {
+  padding: 50px;
+}
+.user-details,
+.profile-image-name-designation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.profile-name-designation {
+  margin-left: 30px;
+}
+.profile-name {
+  margin-bottom: 8px;
+  font-size: 33px;
+  color: #3e3f42;
+}
+.profile-designation {
+  font-size: 18px;
+  color: #a9a9a9;
+}
+.edit-btn {
+  width: 130px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #1d1d1d;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.save-btn {
+  display: block;
+  margin: auto;
+  width: 130px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #1d1d1d;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.phone-number {
+  font-size: 15px;
+  color: #1d1d1d;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+.profile-emailid {
+  padding-top: 5px;
+  font-size: 15px;
+  color: #1d1d1d;
+  margin-left: 10px;
+}
+.id-dob-dept {
+  font-size: 16px;
+  color: #3e3f42;
+  margin-top: 10px;
+}
+.profile-skills-header {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.47;
+  color: #a9a9a9;
+  margin-bottom: 15px;
+}

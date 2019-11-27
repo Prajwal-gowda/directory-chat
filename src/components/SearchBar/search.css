@@ -1,0 +1,24 @@
+.search-result {
+  position: absolute;
+  width: 400px;
+  box-shadow: 8px 8px 15px 0 rgba(22, 0, 213, 0.06);
+  background-color: white;
+}
+.seach-result-user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 20px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+.search-user-name {
+  font-size: 15px;
+}
+.search-profile-photo {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}

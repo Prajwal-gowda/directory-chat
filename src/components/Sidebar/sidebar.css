@@ -63,6 +63,32 @@
   background-color: white;
 }
 
-.user-icon{
-    padding-right: 5px;
+.user-icon {
+  padding-right: 5px;
+}
+
+.create-group-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto;
+  width: 120px;
+  height: 35px;
+  color: white;
+  outline: none;
+  border: none;
+  background-color: #595959;
+  cursor: pointer;
+  border-radius: 15px 15px;
+  transition: all 0.3s;
+}
+
+.create-group-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+.create-group-icon {
+  font-size: 20px;
+  padding: 2px;
 }

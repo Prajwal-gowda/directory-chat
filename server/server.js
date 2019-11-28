@@ -13,6 +13,7 @@ const getUsersRoute = require("./routes/getUsersRoute");
 const getAllUsersRoute = require("./routes/getAllUsersRoute");
 const employeeRoute = require("./routes/employeeRoute");
 const postroutes = require("./routes/PostRoute");
+const dashboardRoute = require("./routes/dashboardRoutes");
 // const users = require("./routes/user");
 const socketIO = require("socket.io");
 
@@ -57,6 +58,7 @@ app.use(cors());
 // app.use("/home", getAllUsersRoute);
 // app.use("/user", employeeRoute);
 app.use("/users", postroutes);
+app.use("/dashboard", dashboardRoute);
 // app.use("/api/users", users);
 
 const socketOps = require("./socketOps");

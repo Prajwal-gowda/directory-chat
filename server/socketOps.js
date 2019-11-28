@@ -1,7 +1,7 @@
 let mongoose = require("mongoose"),
   express = require("express");
 
-// let chats = require("./models/chat-schema"),
+let chats = require("./models/chat-schema");
 //   user = require("./models/user-schema"),
 //   groups = require("./models/group-schema"),
 //   groupChats = require("./models/group-chat-schema");
@@ -32,17 +32,19 @@ const allSocketOps = io => {
     });
 
     socket.on("chat message", (msg, username, userId) => {
-      //   let encodedData = Buffer.from(msg).toString("base64");
-      //   console.log(encodedData);
-      //   let chatRecord = new chats({
-      //     sender: username,
-      //     message: encodedData,
-      //     reciever: "all"
-      //   });
-      //   chatRecord.save(function(err, chatData) {
-      //     if (err) return console.error(err);
-      //     console.log("saved to collection.");
-      //   });
+      let encodedData = Buffer.from(msg).toString("base64");
+      console.log(encodedData);
+      let chatRecord = new chats({
+        senderId: userId,
+        sender: username,
+        message: encodedData,
+        reciever: "all",
+        recieverId: "all"
+      });
+      chatRecord.save(function(err, chatData) {
+        if (err) return console.error(err);
+        console.log("saved to collection.");
+      });
       console.log(username);
       console.log(msg);
       console.log(userId);
@@ -60,23 +62,33 @@ const allSocketOps = io => {
       sid.forEach(elm =>
         io
           .to(`${elm.socketID}`)
-          .emit("private", pvtMsg, sender.name, reciever.name)
+          .emit(
+            "private",
+            pvtMsg,
+            sender.name,
+            reciever.name,
+            sender._id,
+            reciever._id
+          )
       );
       // let senderId = userData[String(reciever)];
       // let recieverId = userData[String(sender)];
-      // let encodedData = Buffer.from(pvtMsg).toString("base64");
+
       // let sid = userList.filter(
       //   elem => elem.username === sender || elem.username === reciever
       // );
-      // let privateRecord = new chats({
-      //   sender: sender,
-      //   message: encodedData,
-      //   reciever: reciever
-      // });
-      // privateRecord.save(function(err, chatData) {
-      //   if (err) return console.error(err);
-      //   console.log("saved to collection.");
-      // });
+      let encodedData = Buffer.from(pvtMsg).toString("base64");
+      let privateRecord = new chats({
+        senderId: sender._id,
+        sender: sender.name,
+        message: encodedData,
+        reciever: reciever.name,
+        recieverId: reciever._id
+      });
+      privateRecord.save(function(err, chatData) {
+        if (err) return console.error(err);
+        console.log("saved to collection.");
+      });
       // sid.forEach(elm =>
       //   io
       //     .to(`${elm.socketID}`)

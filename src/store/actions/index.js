@@ -3,7 +3,8 @@ import {
   FETCH_ALL_USERS,
   FETCH_USER,
   UPDATE_USER,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  FETCH_PRIVATE_CHATS
 } from "./types";
 import setAuthToken from "../../setAuthToken";
 import jwt_decode from "jwt-decode";
@@ -116,4 +117,11 @@ export const logoutUser = history => dispatch => {
   setAuthToken(false);
   dispatch(setCurrentUser({}));
   history.push(ROUTES.LANDING);
+};
+
+export const fetchPrivateChats = chats => {
+  return {
+    type: FETCH_PRIVATE_CHATS,
+    chats
+  };
 };

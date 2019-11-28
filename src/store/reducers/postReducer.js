@@ -2,7 +2,8 @@ import {
   ADD_USER,
   FETCH_ALL_USERS,
   FETCH_USER,
-  UPDATE_USER
+  UPDATE_USER,
+  FETCH_PRIVATE_CHATS
 } from "../actions/types";
 
 export default function postReducer(state = [], action) {
@@ -15,6 +16,8 @@ export default function postReducer(state = [], action) {
       return action.posts;
     case UPDATE_USER:
       return [...state, action.payload];
+    case FETCH_PRIVATE_CHATS:
+      return action.chats;
     default:
       return state;
   }

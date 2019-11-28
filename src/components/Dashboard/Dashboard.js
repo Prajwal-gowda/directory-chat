@@ -9,6 +9,10 @@ import Form from "../Form/Form";
 import SideBar from "../Sidebar/SideBar";
 import ChatList from "../Chatlist/ChatList";
 import PrivateDashboard from "../Privatedashboard/PrivateDashboard";
+import { DataHandle } from "../../utils/dataHandler";
+import { API_CONSTANTS } from "../../constants/api";
+import PopUpForm from "../Popupform/PopUpForm";
+import { ROUTE_CONSTANTS } from "../../constants/routepath";
 
 class Dashboard extends Component {
   state = {
@@ -18,6 +22,10 @@ class Dashboard extends Component {
     userList: [],
     userInformation: [],
     privateMsgs: []
+  };
+
+  handleChatState = data => {
+    this.setState({ messageList: data });
   };
 
   handleChange = ({ target }) => {
@@ -46,6 +54,8 @@ class Dashboard extends Component {
       this.setState({ userList: listOfUsers });
     });
 
+    DataHandle.getData(API_CONSTANTS.GET_CHATS, this.handleChatState);
+
     let tempChat = [];
 
     socket.on("chat message", (msg, uname, senderId, receiver) => {
@@ -61,10 +71,16 @@ class Dashboard extends Component {
     });
 
     let privateChat = [];
-    socket.on("private", (pmsg, sender, receiver) => {
+    socket.on("private", (pmsg, sender, receiver, senderID, recieverID) => {
       console.log("inside private chat");
       privateChat = [...this.state.privateMsgs];
-      privateChat.push({ message: pmsg, sender: sender, receiver: receiver });
+      privateChat.push({
+        message: pmsg,
+        sender: sender,
+        receiver: receiver,
+        senderId: senderID,
+        recieverId: recieverID
+      });
       this.setState({
         privateMsgs: privateChat
       });
@@ -85,7 +101,10 @@ class Dashboard extends Component {
               path="/dashboard"
               render={() => (
                 <div className="message-window">
-                  <ChatList listText={this.state.messageList} />
+                  <ChatList
+                    listText={this.state.messageList}
+                    currentUser={this.props.user}
+                  />
                   <Form
                     handleChange={this.handleChange}
                     value={this.state.message}

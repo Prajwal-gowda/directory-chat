@@ -7,6 +7,9 @@ import "./privatedashboard.css";
 import ChatList from "../Chatlist/ChatList";
 import Form from "../Form/Form";
 import { socket } from "../../utils/socketConn";
+import { DataHandle } from "../../utils/dataHandler";
+import { API_CONSTANTS } from "../../constants/api";
+import { fetchPrivateChats } from "../../store/actions/index";
 
 class PrivateDashboard extends Component {
   state = {
@@ -14,7 +17,15 @@ class PrivateDashboard extends Component {
     recieverId: "",
     reciever: {},
     message: "",
-    privateChat: []
+    privateChat: [],
+    messageList: [],
+    pvtMsg: []
+  };
+
+  handleChatState = data => {
+    this.props.fetchPrivateChats(data);
+    console.log(data);
+    this.setState({ messageList: data });
   };
 
   handleChange = ({ target }) => {
@@ -31,7 +42,14 @@ class PrivateDashboard extends Component {
   };
 
   componentDidMount = () => {
+    let recieverId = this.props.history.location.pathname.split("/");
     this.setState({ sender: this.props.user });
+    DataHandle.getPrivateMessages(
+      API_CONSTANTS.GET_PRIVATE_CHATS,
+      this.props.user._id,
+      recieverId[2],
+      this.handleChatState
+    );
   };
 
   componentDidUpdate = prevProps => {
@@ -42,30 +60,75 @@ class PrivateDashboard extends Component {
         user => user._id === recieverId[2]
       );
       this.setState({ reciever: recieverObj[0] });
+      DataHandle.getPrivateMessages(
+        API_CONSTANTS.GET_PRIVATE_CHATS,
+        this.props.user._id,
+        recieverId[2],
+        this.handleChatState
+      );
     }
   };
 
   componentWillReceiveProps = nextProps => {
-    let recieverId = nextProps.history.location.pathname.split("/");
-    let recieverObj = nextProps.users.filter(
-      user => user._id === recieverId[2]
-    );
-    this.setState({
-      reciever: recieverObj[0],
-      privateChat: nextProps.privateMsg
+    console.log(nextProps);
+    let messageHistory = [...this.state.messageList];
+    let recieverId = nextProps.history.location.pathname.split("/"),
+      recieverObj = nextProps.users.filter(user => user._id === recieverId[2]),
+      privateConversation = nextProps.privateMsg;
+    privateConversation.forEach(elem => {
+      let msgIndex = messageHistory.findIndex(
+        eachMsg =>
+          eachMsg.senderId === elem.senderId && eachMsg.message === elem.message
+      );
+      if (msgIndex === -1) {
+        messageHistory.push(elem);
+        return;
+      }
     });
+    console.log(messageHistory);
+    let conversationData = messageHistory.filter(
+      elem =>
+        (elem.senderId === nextProps.user._id &&
+          elem.recieverId === recieverId[2]) ||
+        (elem.senderId === recieverId[2] &&
+          elem.recieverId === nextProps.user._id)
+    );
+    console.log(conversationData);
+    this.setState({ reciever: recieverObj[0], privateChat: conversationData });
   };
 
-  //   static getDerivedStateFromProps(nextProps, prevState) {
-  //     console.log(nextProps.listOfUsers);
-  //     let recieverId = nextProps.history.location.pathname.split("/");
-  //     console.log(recieverId);
-  //     let recieverObj = nextProps.users.filter(
-  //       user => user._id === recieverId[2]
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(prevState);
+  //   let messageHistory = prevState.messageList;
+  //   console.log(messageHistory);
+  //   let recieverId = nextProps.history.location.pathname.split("/"),
+  //     recieverObj = nextProps.users.filter(user => user._id === recieverId[2]),
+  //     privateConversation = nextProps.privateMsg;
+  //   privateConversation.forEach(elem => {
+  //     let msgIndex = messageHistory.findIndex(
+  //       eachMsg =>
+  //         eachMsg.senderId === elem.senderId && eachMsg.message === elem.message
   //     );
-  //     console.log(recieverObj[0]);
-  //     this.setState({ reciever: recieverObj[0] });
-  //   }
+  //     if (msgIndex === -1) {
+  //       messageHistory.push(elem);
+  //       return;
+  //     }
+  //   });
+  //   console.log(messageHistory);
+  //   let conversationData = messageHistory.filter(
+  //     elem =>
+  //       (elem.senderId === nextProps.user._id &&
+  //         elem.recieverId === recieverId[2]) ||
+  //       (elem.senderId === recieverId[2] &&
+  //         elem.recieverId === nextProps.user._id)
+  //   );
+  //   console.log(conversationData);
+  //   return {
+  //     reciever: recieverObj[0],
+  //     privateChat: conversationData,
+  //     pvtMsg: conversationData
+  //   };
+  // }
 
   render() {
     return (
@@ -73,7 +136,21 @@ class PrivateDashboard extends Component {
         <h2 className="reciever-name">
           {this.state.reciever && this.state.reciever.name}
         </h2>
-        <ChatList listText={this.state.privateChat} />
+        {this.state.privateChat.length > 0 ? (
+          <ChatList
+            listText={this.state.privateChat}
+            currentUser={this.props.user}
+          />
+        ) : (
+          <ChatList
+            listText={this.state.messageList}
+            currentUser={this.props.user}
+          />
+        )}
+        {/* <ChatList
+          listText={this.state.messageList}
+          currentUser={this.props.user}
+        /> */}
         <Form
           handleChange={this.handleChange}
           value={this.state.message}

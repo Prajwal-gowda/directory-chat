@@ -16,12 +16,89 @@
   transform: translate(-50%, -50%);
   min-width: 300px;
   width: 350px;
-  background: #282c34;
+  height: 400px;
+  background: #d9d9d9;
   margin: 0 auto;
-
   padding: 30px 10px;
   text-align: center;
   border-radius: 5px;
   color: black;
   z-index: 2;
+}
+
+.close-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0;
+  background-color: #595959;
+}
+
+.input-fields {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 10px;
+  width: 80%;
+  outline: none;
+}
+
+.form-header {
+  color: #595959;
+  /* text-shadow: 2px 2px 2px black; */
+}
+
+textarea {
+  margin-bottom: 20px;
+  background: transparent;
+  color: teal;
+}
+
+.inner-popup {
+  position: relative;
+  min-width: 300px;
+  width: 350px;
+  background: white;
+  margin: 0 auto;
+  margin-top: 250px;
+  padding: 30px 10px 10px 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: black;
+}
+
+.submit-group,
+.add-member {
+  width: 100px;
+  height: 35px;
+  background-color: #595959;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+}
+
+.member-field {
+  display: block;
+  background: transparent;
+  margin: 10px auto;
+  outline: none;
+  border: 1px solid white;
+  color: teal;
+}
+
+.group-input-field {
+  display: block;
+  margin: 10px auto;
+  height: 30px;
+  outline: none;
+  padding: 3px;
+  opacity: 0.5;
 }

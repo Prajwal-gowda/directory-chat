@@ -9,7 +9,10 @@ import Form from "../Form/Form";
 import { socket } from "../../utils/socketConn";
 import { DataHandle } from "../../utils/dataHandler";
 import { API_CONSTANTS } from "../../constants/api";
-import { fetchPrivateChats } from "../../store/actions/index";
+import {
+  fetchPrivateChats,
+  getPrivateMessages
+} from "../../store/actions/index";
 
 class PrivateDashboard extends Component {
   state = {
@@ -23,7 +26,7 @@ class PrivateDashboard extends Component {
   };
 
   handleChatState = data => {
-    this.props.fetchPrivateChats(data);
+    // this.props.fetchPrivateChats(data);
     console.log(data);
     this.setState({ messageList: data });
   };
@@ -50,6 +53,11 @@ class PrivateDashboard extends Component {
       recieverId[2],
       this.handleChatState
     );
+    this.props.getPrivateMessages(
+      API_CONSTANTS.GET_PRIVATE_CHATS,
+      this.props.user._id,
+      recieverId[2]
+    );
   };
 
   componentDidUpdate = prevProps => {
@@ -66,11 +74,15 @@ class PrivateDashboard extends Component {
         recieverId[2],
         this.handleChatState
       );
+      this.props.getPrivateMessages(
+        API_CONSTANTS.GET_PRIVATE_CHATS,
+        this.props.user._id,
+        recieverId[2]
+      );
     }
   };
 
   componentWillReceiveProps = nextProps => {
-    console.log(nextProps);
     let messageHistory = [...this.state.messageList];
     let recieverId = nextProps.history.location.pathname.split("/"),
       recieverObj = nextProps.users.filter(user => user._id === recieverId[2]),
@@ -169,7 +181,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchAllUsers: () => dispatch(fetchAllUsers())
+    fetchAllUsers: () => dispatch(fetchAllUsers()),
+    getPrivateMessages: (url, senderId, recieverId) =>
+      dispatch(getPrivateMessages(url, senderId, recieverId))
   };
 };
 export default withRouter(

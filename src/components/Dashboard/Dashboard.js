@@ -21,7 +21,8 @@ class Dashboard extends Component {
     userName: "",
     userList: [],
     userInformation: [],
-    privateMsgs: []
+    privateMsgs: [],
+    conversations: []
   };
 
   handleChatState = data => {
@@ -71,20 +72,37 @@ class Dashboard extends Component {
     });
 
     let privateChat = [];
-    socket.on("private", (pmsg, sender, receiver, senderID, recieverID) => {
-      console.log("inside private chat");
-      privateChat = [...this.state.privateMsgs];
-      privateChat.push({
-        message: pmsg,
-        sender: sender,
-        receiver: receiver,
-        senderId: senderID,
-        recieverId: recieverID
-      });
-      this.setState({
-        privateMsgs: privateChat
-      });
-    });
+    socket.on(
+      "private",
+      (pmsg, sender, receiver, senderID, recieverID, recieverImg) => {
+        console.log("inside private chat");
+        console.log(this.props.chats);
+        let recieverId = this.props.history.location.pathname.split("/");
+        console.log(recieverId[2]);
+        let previousConversation = [...this.props.chats];
+        if (senderID === this.props.user._id && recieverID === recieverId[2]) {
+          previousConversation.push({
+            message: pmsg,
+            sender: sender,
+            receiver: receiver,
+            senderId: senderID,
+            recieverId: recieverID
+          });
+          this.setState({ conversations: previousConversation });
+        }
+        privateChat = [...this.state.privateMsgs];
+        privateChat.push({
+          message: pmsg,
+          sender: sender,
+          receiver: receiver,
+          senderId: senderID,
+          recieverId: recieverID
+        });
+        this.setState({
+          privateMsgs: privateChat
+        });
+      }
+    );
   };
 
   render() {
@@ -121,6 +139,7 @@ class Dashboard extends Component {
                   {...routeProps}
                   listOfUsers={this.props.users}
                   privateMsg={this.state.privateMsgs}
+                  conversations={this.state.conversations}
                 />
               )}
             />
@@ -134,7 +153,8 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
   return {
     users: state.users,
-    user: state.auth.user
+    user: state.auth.user,
+    chats: state.chats
   };
 };
 

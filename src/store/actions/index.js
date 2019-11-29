@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
+import { API_CONSTANTS } from "../../constants/api";
 
 const apiUrl = "http://localhost:4000/users";
 
@@ -122,6 +123,26 @@ export const logoutUser = history => dispatch => {
 export const fetchPrivateChats = chats => {
   return {
     type: FETCH_PRIVATE_CHATS,
-    chats
+    payload: chats
+  };
+};
+
+export const getPrivateMessages = (url, senderId, recieverId) => {
+  return dispatch => {
+    return axios
+      .get(url, {
+        params: {
+          senderId: senderId,
+          recieverId: recieverId
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+        dispatch(fetchPrivateChats(res.data));
+        // cb(res.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
 };

@@ -16,8 +16,6 @@ export default function postReducer(state = [], action) {
       return action.posts;
     case UPDATE_USER:
       return [...state, action.payload];
-    case FETCH_PRIVATE_CHATS:
-      return action.chats;
     default:
       return state;
   }

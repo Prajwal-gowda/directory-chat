@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import SearchResult from "../SearchResults/SearchResult";
 import "./search.css";
 
@@ -9,6 +9,12 @@ class SearchBar extends React.Component {
   handleChange = e => {
     this.setState({ searchString: e.target.value });
   };
+
+  handleClick = user => {
+    this.props.addMemberToGroup(user);
+    this.setState({ searchString: "" });
+  };
+
   getSearchResult = () => {
     var userList = this.props.users,
       searchString = this.state.searchString.trim().toLowerCase();
@@ -20,29 +26,31 @@ class SearchBar extends React.Component {
     }
     if (userList.length !== this.props.users.length) {
       return userList.map((user, i) => {
-        return <SearchResult key={i} user={user} />;
+        return (
+          <div className="seach-result-user-card" key={i}>
+            <div
+              className="search-user-name"
+              onClick={() => this.handleClick(user)}
+            >
+              {user.name}
+            </div>
+          </div>
+        );
       });
     }
   };
   render() {
     return (
-      <div className="search-bar">
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-          autoComplete="off"
-        >
-          <i className="fa fa-search"></i>
-          <input
-            className="searchbar-input"
-            type="text"
-            id="filter"
-            placeholder="Search..."
-            value={this.state.searchString}
-            onChange={this.handleChange}
-          />
-        </form>
+      <div className="search-input">
+        <i className="fa fa-search"></i>
+        <input
+          className="searchbar-input"
+          type="text"
+          id="filter"
+          placeholder="Search..."
+          value={this.state.searchString}
+          onChange={this.handleChange}
+        />
         <div className="search-result">{this.getSearchResult()}</div>
       </div>
     );

@@ -14,6 +14,9 @@ let groupchatSchema = new Schema(
     },
     groupname: {
       type: String
+    },
+    groupId: {
+      type: String
     }
   },
   {

@@ -9,6 +9,7 @@ import Form from "../Form/Form";
 import SideBar from "../Sidebar/SideBar";
 import ChatList from "../Chatlist/ChatList";
 import PrivateDashboard from "../Privatedashboard/PrivateDashboard";
+import ChatRoom from "../Chatroom/ChatRoom";
 import { DataHandle } from "../../utils/dataHandler";
 import { API_CONSTANTS } from "../../constants/api";
 import PopUpForm from "../Popupform/PopUpForm";
@@ -22,7 +23,9 @@ class Dashboard extends Component {
     userList: [],
     userInformation: [],
     privateMsgs: [],
-    conversations: []
+    conversations: [],
+    roomData: {},
+    groupMsg: []
   };
 
   handleChatState = data => {
@@ -103,6 +106,21 @@ class Dashboard extends Component {
         });
       }
     );
+
+    socket.on("addRoom", groupData => {
+      this.setState({ roomData: groupData });
+    });
+
+    socket.on("groupMessage", (msg, sender, groupName, groupId) => {
+      let tempGroup = [...this.state.groupMsg];
+      tempGroup.push({
+        message: msg,
+        sender: sender,
+        receiver: groupName,
+        recieverId: groupId
+      });
+      this.setState({ groupMsg: tempGroup });
+    });
   };
 
   render() {
@@ -112,6 +130,7 @@ class Dashboard extends Component {
           <SideBar
             userList={this.state.userList}
             userInfo={this.state.userInformation}
+            roomData={this.state.roomData}
           />
           <Switch>
             <Route
@@ -129,6 +148,14 @@ class Dashboard extends Component {
                     sendMessage={this.sendMessage}
                   />
                 </div>
+              )}
+            />
+
+            <Route
+              exact
+              path="/dashboard/group/:room"
+              render={routeProps => (
+                <ChatRoom {...routeProps} grpMsg={this.state.groupMsg} />
               )}
             />
 

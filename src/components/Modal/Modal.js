@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./popupform.css";
+import "./modal.css";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { socket } from "../../utils/socketConn";
@@ -7,12 +7,13 @@ import SearchBar from "../SearchBar/SearchBar";
 import { connect } from "react-redux";
 import MemberList from "../Addmembers/MemberList";
 
-class PopupForm extends Component {
+class Modal extends Component {
   state = {
     groupName: "",
     groupMembers: [],
     memberName: "",
-    createdBy: ""
+    createdBy: {},
+    currentRoom: {}
   };
 
   handleInputChange = ({ target }) => {
@@ -25,34 +26,37 @@ class PopupForm extends Component {
 
   handleSend = () => {
     // this.props.handleChatRoomState(this.state.groupName);
-    let groupId = Math.random()
-      .toString(36)
-      .substring(2, 15);
     socket.emit(
-      "addRoom",
-      groupId,
-      this.state.groupName,
-      this.state.groupMembers,
-      this.state.createdBy
+      "joinGroup",
+      this.state.currentRoom.groupId,
+      this.state.currentRoom.groupname,
+      this.state.groupMembers
     );
     this.props.handleClose();
   };
 
   addMemberToGroup = member => {
-    let memberList = [...this.state.groupMembers];
-    if (memberList.includes(member.name)) {
+    let memberList = [...this.state.currentRoom.members],
+      newMembers = [...this.state.groupMembers];
+    if (memberList.includes(member.name) || newMembers.includes(member.name)) {
       console.log("user present");
     } else {
-      memberList.push(member.name);
-      this.setState({ groupMembers: memberList });
+      newMembers.push(member.name);
+      this.setState({ groupMembers: newMembers });
     }
   };
 
   componentDidMount = () => {
-    let initialMember = [];
-    initialMember.push(this.props.user.name);
-    this.setState({ createdBy: this.props.user, groupMembers: initialMember });
+    console.log(this.state.currentRoom);
+    this.setState({ createdBy: this.props.user });
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    return {
+      currentRoom: nextProps.currentRoom
+    };
+  }
 
   render() {
     return (
@@ -60,13 +64,6 @@ class PopupForm extends Component {
         <div className="popup-inner">
           <h1 className="form-header">{this.props.text}</h1>
           <form id="popupform" onClick={this.handleSubmit}>
-            <input
-              className="group-input-field"
-              placeholder="enter group name"
-              name="groupName"
-              value={this.state.groupName}
-              onChange={this.handleInputChange}
-            />
             <SearchBar
               users={this.props.users}
               addMemberToGroup={this.addMemberToGroup}
@@ -89,12 +86,12 @@ class PopupForm extends Component {
   }
 }
 
-PopupForm.propTypes = {
+Modal.propTypes = {
   text: PropTypes.string.isRequired,
   handleClose: PropTypes.func.isRequired
 };
 
-PopupForm.defaultProps = {
+Modal.defaultProps = {
   text: "",
   handleClose: () => {}
 };
@@ -106,4 +103,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(PopupForm));
+export default withRouter(connect(mapStateToProps)(Modal));

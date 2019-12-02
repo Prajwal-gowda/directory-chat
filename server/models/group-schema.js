@@ -3,6 +3,9 @@ const Schema = mongoose.Schema;
 
 let groupSchema = new Schema(
   {
+    groupId: {
+      type: String
+    },
     groupname: {
       type: String
     },
@@ -10,6 +13,9 @@ let groupSchema = new Schema(
       type: Array
     },
     createdBy: {
+      type: String
+    },
+    creatorId: {
       type: String
     }
   },

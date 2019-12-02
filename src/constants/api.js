@@ -8,5 +8,6 @@ export const API_CONSTANTS = {
   GET_PRIVATE_CHATS: `${BASE_URL}/dashboard/private`,
   GET_GROUP_LIST: `${BASE_URL}/dashboard/grouplist`,
   GET_GROUP_MESSAGES: `${BASE_URL}/dashboard/groupmessage`,
-  GET_USERLIST: `${BASE_URL}/dashboard/userlist`
+  GET_USERLIST: `${BASE_URL}/dashboard/userlist`,
+  GET_CURRENT_GROUP: `${BASE_URL}/dashboard/currentgroup`
 };

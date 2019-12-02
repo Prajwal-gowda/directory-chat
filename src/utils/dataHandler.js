@@ -78,12 +78,28 @@ export const DataHandle = (function() {
       });
   };
 
-  const getGroupMessages = (url, sender, groupname, cb) => {
+  const getCurrentGroup = (url, groupId, cb) => {
+    axios
+      .get(url, {
+        params: {
+          groupId: groupId
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+        cb(res.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  const getGroupMessages = (url, sender, groupId, cb) => {
     axios
       .get(url, {
         params: {
           sender: sender,
-          groupname: groupname
+          groupId: groupId
         }
       })
       .then(res => {
@@ -102,6 +118,7 @@ export const DataHandle = (function() {
     googgleAuthentication,
     getPrivateMessages,
     getgroupList,
-    getGroupMessages
+    getGroupMessages,
+    getCurrentGroup
   };
 })();

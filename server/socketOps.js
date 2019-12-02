@@ -2,9 +2,9 @@ let mongoose = require("mongoose"),
   express = require("express");
 
 let chats = require("./models/chat-schema");
-//   user = require("./models/user-schema"),
-//   groups = require("./models/group-schema"),
-//   groupChats = require("./models/group-chat-schema");
+(user = require("./models/user-schema")),
+  (groups = require("./models/group-schema")),
+  (groupChats = require("./models/group-chat-schema"));
 
 const allSocketOps = io => {
   const userData = {},
@@ -95,88 +95,102 @@ const allSocketOps = io => {
       //     .emit("private", pvtMsg, sender, reciever, privateList)
       // );
     });
-    // socket.on("addRoom", (roomName, memberList, createdBy) => {
-    //   rooms.push(roomName);
-    //   console.log(rooms);
-    //   let groupData = new groups({
-    //     groupname: roomName,
-    //     members: memberList,
-    //     createdBy: createdBy
-    //   });
-    //   groupData.save((err, data) => {
-    //     if (err) return console.error(err);
-    //     console.log("group created");
-    //   });
-    //   io.emit("addRoom", { groupname: roomName, members: memberList });
-    // });
+    socket.on("addRoom", (groupId, roomName, memberList, createdBy) => {
+      rooms.push(roomName);
+      console.log(groupId);
+      let groupData = new groups({
+        groupId: groupId,
+        groupname: roomName,
+        members: memberList,
+        createdBy: createdBy.name,
+        creatorId: createdBy._id
+      });
+      groupData.save((err, data) => {
+        if (err) return console.error(err);
+        console.log("group created");
+      });
+      io.emit("addRoom", {
+        groupId: groupId,
+        groupname: roomName,
+        members: memberList,
+        createdBy: createdBy.name,
+        creatorId: createdBy._id
+      });
+    });
 
-    // socket.on("joinGroup", (room, member) => {
-    //   socket.join(room);
-    //   console.log(member + "joined" + room);
-    //   console.log(socket.id + "joined" + room);
+    socket.on("joinGroup", (roomId, room, memberList) => {
+      groups.findOne({ groupId: roomId }, (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        memberList.forEach(member => {
+          if (data.members.includes(member)) {
+            console.log("member present");
+          } else {
+            groups.updateOne(
+              { groupname: room },
+              { $push: { members: member } },
+              (err, data) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log("member added");
+                }
+              }
+            );
+          }
+        });
+      });
+    });
 
-    //   groups.findOne({ groupname: room }, (err, data) => {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //     if (data.members.includes(member)) {
-    //       console.log("member present");
-    //     } else {
-    //       groups.updateOne(
-    //         { groupname: room },
-    //         { $push: { members: member } },
-    //         (err, data) => {
-    //           if (err) {
-    //             console.log(err);
-    //           } else {
-    //             console.log("member added");
-    //           }
-    //         }
-    //       );
-    //     }
-    //   });
-    // });
+    socket.on("groupMessage", (groupData, msg, sender) => {
+      console.log("sending messages to groups");
+      let encodedData = Buffer.from(msg).toString("base64");
+      let groupMessageData = new groupChats({
+        senderId: sender._id,
+        sender: sender.name,
+        message: encodedData,
+        groupname: groupData.groupname,
+        groupId: groupData.groupId
+      });
 
-    // socket.on("groupMessage", (groupName, msg, sender) => {
-    //   console.log("sending messages to groups");
-    //   let encodedData = Buffer.from(msg).toString("base64");
-    //   let groupMessageData = new groupChats({
-    //     sender: sender,
-    //     message: encodedData,
-    //     groupname: groupName
-    //   });
+      groups.findOne({ groupId: groupData.groupId }, (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(data.members);
+        console.log(userList);
+        let groupMembers = data.members;
 
-    //   groups.findOne({ groupname: groupName }, (err, data) => {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //     console.log(data.members);
-    //     console.log(userList);
-    //     let groupMembers = data.members;
+        if (groupMembers.includes(sender.name)) {
+          let groupIds = userList.filter(user => {
+            if (groupMembers.includes(user.username)) {
+              return user;
+            }
+          });
+          console.log(groupIds);
+          groupIds.forEach(member =>
+            io
+              .to(`${member.socketID}`)
+              .emit(
+                "groupMessage",
+                msg,
+                sender.name,
+                data.groupname,
+                data.groupId
+              )
+          );
 
-    //     if (groupMembers.includes(sender)) {
-    //       let groupIds = userList.filter(user => {
-    //         if (groupMembers.includes(user.username)) {
-    //           return user;
-    //         }
-    //       });
-    //       console.log(groupIds);
-    //       groupIds.forEach(member =>
-    //         io
-    //           .to(`${member.socketID}`)
-    //           .emit("groupMessage", msg, sender, groupName)
-    //       );
-
-    //       groupMessageData.save((err, data) => {
-    //         if (err) {
-    //           console.log(err);
-    //         }
-    //         console.log(data);
-    //       });
-    //     }
-    //   });
-    //   // io.to(groupName).emit("groupMessage", msg, sender, groupName);
-    // });
+          groupMessageData.save((err, data) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(data);
+          });
+        }
+      });
+      // io.to(groupName).emit("groupMessage", msg, sender, groupName);
+    });
 
     // disconnect is fired when a client leaves the server
     socket.on("disconnect", () => {

@@ -1,22 +1,52 @@
 import React from "react";
-import axios from "axios";
-import { fetchAllUsers } from "../../store/actions";
+import { fetchAllEmployees } from "../../store/actions";
 import { connect } from "react-redux";
+import ReactPaginate from "react-paginate";
+import "./Home.css";
 import Layout from "../Layout/Layout";
 import UserCard from "../UserCard/UserCard";
 
 class HomePage extends React.Component {
+  state = {
+    data: [],
+    offset: 0
+  };
   componentWillMount() {
-    this.props.fetchAllUsers();
+    this.props.fetchAllEmployees(0);
+    // this.props.fetchAllUsers();
   }
+  handlePageClick = data => {
+    console.log(data);
+    let selected = data.selected;
+    console.log(selected);
+    this.props.fetchAllEmployees(selected);
+  };
   render() {
+    const users = this.props.employees.message;
+    console.log(users);
     return (
       <Layout>
         <div className="home-body">
-          {this.props.users.map(user => {
-            return <UserCard user={user} key={user._id} />;
-          })}
+          {users
+            ? users.map((user, index) => {
+                return <UserCard user={user} key={index} />;
+              })
+            : null}
         </div>
+        <ReactPaginate
+          breakLabel={"..."}
+          breakClassName={"visible"}
+          pageRangeDisplayed={4}
+          pageCount={this.props.employees.pages}
+          marginPagesDisplayed={3}
+          onPageChange={this.handlePageClick}
+          previousClassName={"visible"}
+          nextClassName={"visible"}
+          pageClassName={"list-items"}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
       </Layout>
     );
   }
@@ -24,13 +54,12 @@ class HomePage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
-    user: state.auth.user
+    employees: state.employees
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    fetchAllUsers: () => dispatch(fetchAllUsers())
+    fetchAllEmployees: pageNo => dispatch(fetchAllEmployees(pageNo))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

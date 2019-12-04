@@ -3,9 +3,6 @@
   width: 150px;
   border-radius: 50%;
 }
-.profile-container {
-  padding: 50px;
-}
 .user-details,
 .profile-image-name-designation {
   display: flex;
@@ -14,6 +11,7 @@
 }
 .profile-name-designation {
   margin-left: 30px;
+  width: 250px;
 }
 .profile-name {
   margin-bottom: 8px;
@@ -35,16 +33,31 @@
   cursor: pointer;
 }
 .save-btn {
-  display: block;
-  margin: auto;
   width: 130px;
   height: 50px;
+  margin: 10px;
   border-radius: 25px;
   background-color: #1d1d1d;
   color: white;
   border: none;
   outline: none;
   cursor: pointer;
+}
+.cancel-btn {
+  width: 130px;
+  height: 50px;
+  margin: 10px;
+  border-radius: 25px;
+  color: #1d1d1d;
+  background-color: white;
+  border: 1px solid #1d1d1d;
+  outline: none;
+  cursor: pointer;
+}
+.save-cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .phone-number {
   font-size: 15px;
@@ -53,6 +66,7 @@
   margin-left: 10px;
 }
 .profile-emailid {
+  margin: 0;
   padding-top: 5px;
   font-size: 15px;
   color: #1d1d1d;

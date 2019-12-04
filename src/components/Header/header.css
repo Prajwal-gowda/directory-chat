@@ -74,19 +74,20 @@
 .logo-search {
   display: flex;
 }
-.search-bar {
+.header-search-bar {
   margin-left: 30px;
   border-left: 2px solid #eaedf3;
   padding-left: 30px;
 }
-.searchbar-input {
+.header-searchbar-input {
   padding: 10px 0;
   border: none;
   outline: none;
+  width: 220px;
   opacity: 0.5;
   margin-left: 10px;
 }
-.searchbar-input::placeholder {
+.header-searchbar-input::placeholder {
   width: 129px;
   height: 16px;
   font-size: 16px;

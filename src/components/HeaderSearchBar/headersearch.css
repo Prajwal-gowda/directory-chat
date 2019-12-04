@@ -1,13 +1,13 @@
-.search-result {
+.header-search-result {
   position: absolute;
-  max-height: 350px;
-  /* overflow-y: scroll; */
+  z-index: 3;
+  max-height: 700px;
   overflow: hidden;
-  width: 350px;
+  width: 400px;
   box-shadow: 8px 8px 15px 0 rgba(22, 0, 213, 0.06);
   background-color: white;
 }
-.seach-result-user-card {
+.header-seach-result-user-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,31 +17,12 @@
   -moz-box-sizing: border-box; /* Firefox, other Gecko */
   box-sizing: border-box;
 }
-
-.seach-result-user-card:nth-child(even) {
-  background-color: #d9d9d9;
-}
-
-.search-user-name {
+.header-search-user-name {
   font-size: 15px;
-  cursor: pointer;
+  color: black;
 }
 .search-profile-photo {
   height: 40px;
   width: 40px;
   border-radius: 50%;
-}
-
-.searchbar-input {
-  width: 80%;
-  outline: none;
-  border: none;
-  height: 30px;
-  margin-left: 5px;
-  padding: 5px;
-}
-
-.search-input {
-  margin: 10px auto;
-  padding: 5px;
 }

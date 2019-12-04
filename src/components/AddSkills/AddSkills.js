@@ -1,47 +1,30 @@
 import React from "react";
 import SkillsList from "./SkillsList";
+import SkillsForm from "./SkillsForm";
 import "./addSkills.css";
 
 class AddSkills extends React.Component {
   state = {
-    text: ""
+    skills: this.props.skills
   };
-  handleTextChange = event => {
-    this.setState({
-      text: event.target.value
-    });
+
+  addItem = todoItem => {
+    this.props.skills.push(todoItem.newItemValue);
+    this.setState({ skills: this.props.skills });
   };
-  handleAddItem = event => {
-    event.preventDefault();
-    var newItem = {
-      id: Date.now(),
-      text: this.state.text
-    };
-    this.setState({ text: "" });
-    this.props.handleAddSkills(newItem);
+
+  removeItem = itemIndex => {
+    this.props.skills.splice(itemIndex, 1);
+    this.setState({ skills: this.props.skills }, () =>
+      console.log(this.props.skills)
+    );
   };
-  handleDeleteItem = itemId => {
-    var updatedItems = this.props.skills.filter(item => {
-      return item.id !== itemId;
-    });
-    this.props.handleDeleteSkills(updatedItems);
-  };
+
   render() {
     return (
-      <div className="add-skills-container">
-        <SkillsList
-          items={this.props.skills}
-          onDeleteItem={this.handleDeleteItem}
-        />
-        <form onSubmit={this.handleAddItem} autoComplete="off">
-          <input
-            className="add-skills-input"
-            type="text"
-            placeholder="Add Skills"
-            onChange={this.handleTextChange}
-            value={this.state.text}
-          />
-        </form>
+      <div id="main">
+        <SkillsList items={this.props.skills} removeItem={this.removeItem} />
+        <SkillsForm addItem={this.addItem} />
       </div>
     );
   }

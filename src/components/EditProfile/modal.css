@@ -1,4 +1,4 @@
-.input-fields {
+.input-field-profile {
   width: 100%;
   padding: 5px 0;
   border: none;
@@ -6,8 +6,8 @@
   background: transparent;
   border-bottom: 2px solid #a9a9a9;
 }
-.input-fields::placeholder {
-  font-size: 18px;
+.input-field-profile::placeholder {
+  font-size: 14px;
   opacity: 0.7;
 }
 .edit-profile-user-details {
@@ -16,10 +16,10 @@
   align-items: center;
 }
 .edit-profile-email-phone {
-  margin-top: 50px;
+  margin-top: 35px;
 }
 .edit-profile-id-dob-dept {
-  margin: 40px 0;
+  margin: 30px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,6 +65,7 @@
   margin-left: 20px;
 }
 .user-email {
+  margin: 0;
   padding-top: 5px;
   margin-left: 20px;
   font-size: 15px;

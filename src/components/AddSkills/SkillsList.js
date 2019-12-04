@@ -1,17 +1,20 @@
 import React from "react";
-import SkillsItem from "./SkillsItem";
+import SkillsListItem from "./SkillsListItem";
 
-const SkillsList = ({ items, onDeleteItem }) => {
+const SkillsList = ({ items, removeItem, ...props }) => {
+  const renderFunc = () =>
+    items.map((item, index) => (
+      <SkillsListItem
+        key={index}
+        item={item}
+        index={index}
+        removeItem={removeItem}
+      />
+    ));
+
   return (
     <div className="skills-list">
-      {items.map(item => (
-        <SkillsItem
-          key={item.id}
-          id={item.id}
-          text={item.text}
-          onDeleteItem={onDeleteItem}
-        />
-      ))}
+      {items && items.length > 0 && renderFunc()}
     </div>
   );
 };

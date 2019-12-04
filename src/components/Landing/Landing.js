@@ -43,7 +43,8 @@ class LandingPage extends React.Component {
                   alt="yml-square-logo"
                 />
               </div>
-              <p className="YML-directory">YML DIRECTORY</p>
+              <p className="YML-directory">ONE YML</p>
+              {/* change on failure */}
               <GoogleLogin
                 clientId="268770202825-ilpbu759ej9ab5oo4rvub2r05au2har6.apps.googleusercontent.com"
                 render={renderProps => (

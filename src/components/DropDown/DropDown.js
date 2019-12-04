@@ -1,22 +1,19 @@
 import React, { Component } from "react";
 
-class Input extends Component {
+class DropDown extends Component {
   state = {
     value: ""
   };
-
   componentDidMount() {
     const { value } = this.props;
     if (value && value !== "") {
       this.setInitialValue();
     }
   }
-
   setInitialValue = () => {
     const { value } = this.props;
     this.setState({ value });
   };
-
   handleChange = ({ target }) => {
     const { onChange, name } = this.props;
     this.setState(
@@ -29,21 +26,26 @@ class Input extends Component {
       }
     );
   };
-
   render() {
-    const { name, type, placeholder } = this.props;
+    const { name, placeholder } = this.props;
     const { value } = this.state;
     return (
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
+      <select
         name={name}
+        className="custom-select"
+        value={value}
+        placeholder={placeholder}
         onChange={this.handleChange}
-        className="input-field-profile"
-      />
+      >
+        <option value="iOS">iOS</option>
+        <option value="Android">Android</option>
+        <option value="Front End">Front End</option>
+        <option value="Back End">Back End</option>
+        <option value="HR">HR</option>
+        <option value="Project manager">Project Manager</option>
+        <option value="Project owner">Project Owner</option>
+      </select>
     );
   }
 }
-
-export default Input;
+export default DropDown;

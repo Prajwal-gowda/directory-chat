@@ -6,7 +6,7 @@ import * as ROUTES from "../../constants/routes";
 import { connect } from "react-redux";
 import UserIinitalComponent from "../UserIinitalComponent/UserIinitalComponent";
 import ymlLogo from "../../assets/icn-logo3x.png";
-import SearchBar from "../SearchBar/SearchBar";
+import HeaderSearchBar from "../HeaderSearchBar/HeaderSearchBar";
 import "./header.css";
 
 class Header extends React.Component {
@@ -20,7 +20,7 @@ class Header extends React.Component {
     ) : (
       <UserIinitalComponent
         className="header-profile-user-image"
-        // name={this.props.user.name[0]}
+        name={this.props.user.name[0]}
       />
     );
   logout = () => {
@@ -34,7 +34,7 @@ class Header extends React.Component {
             <Link to={ROUTES.HOME}>
               <img src={ymlLogo} className="yml-logo" alt="YML-logo" />
             </Link>
-            {/* <SearchBar userId={userData._id} users={this.props.users} /> */}
+            <HeaderSearchBar />
           </div>
           <div className="profile-logout">
             <Link to={ROUTES.PROFILE}>

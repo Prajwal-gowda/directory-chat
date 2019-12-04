@@ -1,12 +1,15 @@
 import React from "react";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import AddSkills from "../AddSkills/AddSkills";
+import { fetchUser } from "../../store/actions";
 import { connect } from "react-redux";
 import { updateUser } from "../../store/actions";
+import DropDown from "../DropDown/DropDown";
 import "./modal.css";
 import Input from "../Input/Input";
 import Layout from "../Layout/Layout";
 import UserIinitalComponent from "../UserIinitalComponent/UserIinitalComponent";
+import * as ROUTES from "../../constants/routes";
 
 class EditProfilePage extends React.Component {
   state = {
@@ -21,10 +24,36 @@ class EditProfilePage extends React.Component {
       skills: []
     }
   };
-  handleInputChange = e => {
+  componentDidMount() {
+    const key = this.props.user._id;
+    this.props.fetchUser(key);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.currentUser !== this.props.currentUser &&
+      Object.keys(this.props.currentUser).length > 0
+    ) {
+      this.setInitialState();
+    }
+  }
+  setInitialState = () => {
+    console.log(this.props.currentUser);
+    const { currentUser } = this.props;
+    let formDataSet = { ...this.state.formData };
+    Object.keys(currentUser).forEach(key => {
+      formDataSet[key] = currentUser[key];
+    });
+    this.setState({ formData: formDataSet });
+  };
+  handleInputChange = (value, name) => {
     let formData = Object.assign({}, this.state.formData);
-    formData[e.target.name] = e.target.value;
-    this.setState({ formData });
+    this.setState({
+      formData: {
+        ...formData,
+        [name]: value
+      }
+    });
   };
 
   handleFormValidation() {
@@ -74,182 +103,167 @@ class EditProfilePage extends React.Component {
     this.setState({ errors: errors });
     return formIsValid;
   }
-
-  handleAddSkills = skill => {
-    let arg = { ...this.state.formData };
-    arg.skills.push(skill);
-    this.setState(
-      {
-        formData: arg
-      },
-      () => console.log(this.state.formData)
-    );
-  };
-
-  handleDeleteSkills = skills => {
-    let updatedSkills = { ...this.state.formData };
-    updatedSkills.skills = skills;
-    this.setState(
-      {
-        formData: updatedSkills
-      },
-      () => console.log(this.state.formData)
-    );
-  };
-
   onKeyPress = e => {
     if (e.key === "Enter") e.preventDefault();
   };
 
   onSubmit = e => {
     e.preventDefault();
-    e.target.reset();
     const id = this.props.user._id;
     const userObject = this.state.formData;
-    if (this.handleFormValidation()) {
-      this.props.updateUser(id, userObject);
+    if (window.confirm("Are you sure you want to save the data?")) {
+      // Save it!
+      if (this.handleFormValidation()) {
+        this.props.updateUser(id, userObject);
+        this.props.history.push(ROUTES.PROFILE);
+      }
+    } else {
+      // Do nothing!
     }
   };
   render() {
-    const user = this.props.user;
+    const user = this.props.currentUser;
     return (
       <Layout>
-        <div className="profile-body">
-          <div className="profile-container">
-            <form id="profile-edit-form" onSubmit={this.onSubmit}>
-              <div className="edit-profile-user-details">
-                {user.avatarUrl ? (
-                  <img
-                    className="profile-photo"
-                    src={user.avatarUrl}
-                    alt="user-profile"
-                  />
-                ) : (
-                  <UserIinitalComponent
-                    className="profile-user-image"
-                    name={user.name[0]}
-                  />
-                )}
-                <div className="profile-name-designation">
-                  <div className="edit-profile-name">{user.name}</div>
-                  <div className="profile-designation">
-                    <Input
-                      type="text"
-                      name="designation"
-                      placeholder="Designation"
-                      onKeyPress={this.onKeyPress}
-                      onChange={this.handleInputChange}
+        {user && Object.keys(user).length > 0 && (
+          <div className="profile-body">
+            <div className="profile-container">
+              <form id="profile-edit-form">
+                <div className="edit-profile-user-details">
+                  {user.avatarUrl ? (
+                    <img
+                      className="profile-photo"
+                      src={user.avatarUrl}
+                      alt="user-profile"
                     />
-                    <p className="error-msg">
-                      {this.state.errors["designation"]}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="edit-profile-email-phone">
-                <p className="contact-info">CONTACT INFO</p>
-                <div className="profile-email">
-                  <i className="fa fa-envelope-o"></i>
-                  <p className="user-email">{user.emailId}</p>
-                </div>
-                <div className="profile-phone">
-                  <i className="fa fa-phone"></i>
-                  <div className="phone-number-input">
-                    <Input
-                      type="text"
-                      name="phoneNumber"
-                      placeholder="Phone number"
-                      onKeyPress={this.onKeyPress}
-                      onChange={this.handleInputChange}
+                  ) : (
+                    <UserIinitalComponent
+                      className="profile-user-image"
+                      name={user.name}
                     />
-                    <p className="error-msg">
-                      {this.state.errors["phoneNumber"]}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="edit-profile-id-dob-dept">
-                <div>
-                  <label className="profile-label">EMPLOYEE ID</label>
-                  <div>
-                    {user.employeeId ? (
-                      <p className="profile-user-employeeid">
-                        {user.employeeId}
-                      </p>
-                    ) : (
+                  )}
+                  <div className="profile-name-designation">
+                    <div className="edit-profile-name">{user.name}</div>
+                    <div className="profile-designation">
                       <Input
                         type="text"
-                        name="employeeId"
-                        placeholder="YML0000"
+                        name="designation"
+                        placeholder="Designation"
+                        value={user.designation}
                         onKeyPress={this.onKeyPress}
                         onChange={this.handleInputChange}
                       />
-                    )}
-                    <p className="error-msg">
-                      {this.state.errors["employeeID"]}
-                    </p>
+                      <p className="error-msg">
+                        {this.state.errors["designation"]}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <label className="profile-label">BIRTHDAY</label>
+                <div className="edit-profile-email-phone">
+                  <p className="contact-info">CONTACT INFO</p>
+                  <div className="profile-email">
+                    <i className="fa fa-envelope-o"></i>
+                    <p className="user-email">{user.emailId}</p>
+                  </div>
+                  <div className="profile-phone">
+                    <i className="fa fa-phone"></i>
+                    <div className="phone-number-input">
+                      <Input
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone number"
+                        value={user.phoneNumber}
+                        onKeyPress={this.onKeyPress}
+                        onChange={this.handleInputChange}
+                      />
+                      <p className="error-msg">
+                        {this.state.errors["phoneNumber"]}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="edit-profile-id-dob-dept">
                   <div>
-                    <Input
-                      type="text"
-                      name="dob"
-                      placeholder="DD-MM-YYYY"
-                      onKeyPress={this.onKeyPress}
-                      onChange={this.handleInputChange}
-                    />
-                    <p className="error-msg">{this.state.errors["dob"]}</p>
+                    <label className="profile-label">EMPLOYEE ID</label>
+                    <div>
+                      {user.employeeId ? (
+                        <p className="profile-user-employeeid">
+                          {user.employeeId}
+                        </p>
+                      ) : (
+                        <Input
+                          type="text"
+                          name="employeeId"
+                          placeholder="YML0000"
+                          value={user.employeeId}
+                          onKeyPress={this.onKeyPress}
+                          onChange={this.handleInputChange}
+                        />
+                      )}
+                      <p className="error-msg">
+                        {this.state.errors["employeeID"]}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="profile-label">BIRTHDAY</label>
+                    <div>
+                      <Input
+                        type="text"
+                        name="dob"
+                        placeholder="DD-MM-YYYY"
+                        value={user.dob}
+                        onKeyPress={this.onKeyPress}
+                        onChange={this.handleInputChange}
+                      />
+                      <p className="error-msg">{this.state.errors["dob"]}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="profile-label">DEPARTMENT</label>
+                    <div className="center">
+                      <DropDown
+                        name="department"
+                        onKeyPress={this.onKeyPress}
+                        value={user.department}
+                        placeholder="Department"
+                        onChange={this.handleInputChange}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div>
-                  <label className="profile-label">DEPARTMENT</label>
-                  <div className="center">
-                    <select
-                      name="department"
-                      id="sources"
-                      className="custom-select"
-                      onKeyPress={this.onKeyPress}
-                      placeholder="Depaertment"
-                      onChange={this.handleInputChange}
-                    >
-                      <option value="iOS">iOS</option>
-                      <option value="Android">Android</option>
-                      <option value="Front End">Front End</option>
-                      <option value="Back End">Back End</option>
-                      <option value="HR">HR</option>
-                      <option value="Project manager">Project Manager</option>
-                      <option value="Project owner">Project Owner</option>
-                    </select>
-                  </div>
+                  <p className="skills-header">SKILLS</p>
+                  <AddSkills skills={user.skills} />
                 </div>
-              </div>
-              <div>
-                <p className="skills-header">SKILLS</p>
-                <AddSkills
-                  skills={this.state.formData.skills}
-                  handleAddSkills={this.handleAddSkills}
-                  handleDeleteSkills={this.handleDeleteSkills}
-                />
-              </div>
-              <input type="submit" value="Save" className="save-btn" />
-            </form>
+                <div className="save-cancel">
+                  <Link to={ROUTES.PROFILE}>
+                    <button className="cancel-btn">Cancel</button>
+                  </Link>
+                  {/* <input type="submit" value="Save" className="save-btn" /> */}
+                  <button onClick={this.onSubmit} className="save-btn">
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
       </Layout>
     );
   }
 }
 const mapStateToProps = state => {
   return {
+    currentUser: state.currentUser,
     user: state.auth.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUser: (id, user) => dispatch(updateUser(id, user))
+    updateUser: (id, user) => dispatch(updateUser(id, user)),
+    fetchUser: id => dispatch(fetchUser(id))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage);

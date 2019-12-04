@@ -38,3 +38,11 @@
   background-color: #d9d9d9;
   color: #595959;
 }
+
+.emoji-toggle-icon {
+  margin-left: 2%;
+  color: black;
+  font-size: 25px;
+  outline: none;
+  cursor: pointer;
+}

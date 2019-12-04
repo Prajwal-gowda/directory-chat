@@ -66,7 +66,8 @@ class Modal extends Component {
           <form id="popupform" onClick={this.handleSubmit}>
             <SearchBar
               users={this.props.users}
-              addMemberToGroup={this.addMemberToGroup}
+              onClick={this.addMemberToGroup}
+              customClass="custom-search-bar"
             />
             <MemberList items={this.state.groupMembers} />
 

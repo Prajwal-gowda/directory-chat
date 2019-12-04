@@ -1,7 +1,7 @@
 import React from "react";
 import "./chatlist.css";
 import PropTypes from "prop-types";
-import avatarImg from "../../assets/avatar.jpg";
+import avatarImg from "../../assets/avatar2.jpg";
 
 const ChatList = ({ listText, currentUser }) => {
   let listOfChats = [];
@@ -23,7 +23,8 @@ const ChatList = ({ listText, currentUser }) => {
         <div className={`bubble-container ${bubbleDirection}`} key={index}>
           <img className={`img-circle`} src={message.image} />
           <div className={`bubble ${bubbleClass}`}>
-            {`${message.sender} : `} {message.text}
+            <span className="sender-name"> {`${message.sender} : `} </span>
+            {message.text}
           </div>
         </div>
       );

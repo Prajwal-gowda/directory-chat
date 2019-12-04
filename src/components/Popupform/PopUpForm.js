@@ -69,7 +69,8 @@ class PopupForm extends Component {
             />
             <SearchBar
               users={this.props.users}
-              addMemberToGroup={this.addMemberToGroup}
+              onClick={this.addMemberToGroup}
+              customClass="custom-search-bar"
             />
             <MemberList items={this.state.groupMembers} />
 

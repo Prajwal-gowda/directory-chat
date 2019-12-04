@@ -25,6 +25,14 @@ class PrivateDashboard extends Component {
     pvtMsg: []
   };
 
+  handleEmojiAddition = emoji => {
+    console.log(emoji);
+    // let updatedMessage = [...this.state.message];
+    this.setState({
+      message: this.state.message + emoji
+    });
+  };
+
   handleChatState = data => {
     // this.props.fetchPrivateChats(data);
     console.log(data);
@@ -167,6 +175,7 @@ class PrivateDashboard extends Component {
           handleChange={this.handleChange}
           value={this.state.message}
           sendMessage={this.sendIndividualMessage}
+          handleEmojiAddition={this.handleEmojiAddition}
         />
       </div>
     );

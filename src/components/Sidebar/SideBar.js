@@ -6,6 +6,7 @@ import "./sidebar.css";
 
 import PopUpForm from "../Popupform/PopUpForm";
 import Modal from "../Modal/Modal";
+import SearchBar from "../SearchBar/SearchBar";
 import { ROUTE_CONSTANTS } from "../../constants/routepath";
 import { API_CONSTANTS } from "../../constants/api";
 import { DataHandle } from "../../utils/dataHandler";
@@ -26,6 +27,11 @@ class SideBar extends Component {
 
   handleChatRoomState = data => {
     this.setState({ chatRooms: data });
+  };
+
+  handlePrivateWindowRoute = user => {
+    console.log(user);
+    this.props.history.push(`${this.props.match.path}/${user._id}`);
   };
 
   handlePopUpDisplay = () => {
@@ -90,13 +96,34 @@ class SideBar extends Component {
     return (
       <div>
         <div className="sidebar">
-          <Icon
-            className="dashboard-icon"
-            type="appstore"
-            theme="twoTone"
-            onClick={this.handleDashboardRoute}
+          <div className="dashboard-icon">
+            <Icon
+              type="home"
+              className="broadcast-icon"
+              onClick={this.handleDashboardRoute}
+            />
+            {/* <Icon
+              type="appstore"
+              className="broadcast-icon"
+              onClick={this.handleDashboardRoute}
+            /> */}
+            {/* <Icon
+              // className="dashboard-icon"
+              type="appstore"
+              theme="twoTone"
+              onClick={this.handleDashboardRoute}
+            /> */}
+            <Icon
+              type="usergroup-add"
+              className="group-create-icon"
+              onClick={this.handlePopUpDisplay}
+            />
+          </div>
+          <SearchBar
+            users={this.props.users}
+            onClick={this.handlePrivateWindowRoute}
+            // customClass="custom-search-bar"
           />
-
           <ul className="user-list">
             {this.props.userInfo.map((user, index) => (
               <NavLink
@@ -111,14 +138,14 @@ class SideBar extends Component {
             ))}
           </ul>
 
-          <button
+          {/* <button
             className="create-group-btn"
             onClick={this.handlePopUpDisplay}
           >
             <Icon type="usergroup-add" className="create-group-icon" />
             Group
-          </button>
-          <h3 className="group-header">Groups : </h3>
+          </button> */}
+          <hr className="header-break"/>
           <ul className="user-list group-list">
             {this.state.chatRooms &&
               this.state.chatRooms.map((room, index) =>

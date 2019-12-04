@@ -28,6 +28,14 @@ class Dashboard extends Component {
     groupMsg: []
   };
 
+  handleEmojiAddition = emoji => {
+    console.log(emoji);
+    // let updatedMessage = [...this.state.message];
+    this.setState({
+      message: this.state.message + emoji
+    });
+  };
+
   handleChatState = data => {
     this.setState({ messageList: data });
   };
@@ -146,6 +154,7 @@ class Dashboard extends Component {
                     handleChange={this.handleChange}
                     value={this.state.message}
                     sendMessage={this.sendMessage}
+                    handleEmojiAddition={this.handleEmojiAddition}
                   />
                 </div>
               )}

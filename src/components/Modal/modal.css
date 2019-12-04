@@ -102,3 +102,9 @@ textarea {
   padding: 3px;
   opacity: 0.5;
 }
+
+.custom-search-bar {
+  box-sizing: border-box;
+  border-radius: 15px;
+  padding: 7px;
+}

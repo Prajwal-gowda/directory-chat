@@ -22,6 +22,14 @@ class ChatRoom extends Component {
     messageList: []
   };
 
+  handleEmojiAddition = emoji => {
+    console.log(emoji);
+    // let updatedMessage = [...this.state.message];
+    this.setState({
+      message: this.state.message + emoji
+    });
+  };
+
   handleChange = ({ target }) => {
     this.setState({ message: target.value });
   };
@@ -106,6 +114,7 @@ class ChatRoom extends Component {
           handleChange={this.handleChange}
           value={this.state.message}
           sendMessage={this.sendGroupMessage}
+          handleEmojiAddition={this.handleEmojiAddition}
         />
       </div>
     );

@@ -11,7 +11,7 @@ class SearchBar extends React.Component {
   };
 
   handleClick = user => {
-    this.props.addMemberToGroup(user);
+    this.props.onClick(user);
     this.setState({ searchString: "" });
   };
 
@@ -44,7 +44,7 @@ class SearchBar extends React.Component {
       <div className="search-input">
         <i className="fa fa-search"></i>
         <input
-          className="searchbar-input"
+          className={`${this.props.customClass} searchbar-input`}
           type="text"
           id="filter"
           placeholder="Search..."
